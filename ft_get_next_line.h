@@ -6,7 +6,7 @@
 /*   By: nkarpilo <nkarpilo@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 18:48:37 by nkarpilo          #+#    #+#             */
-/*   Updated: 2023/11/27 19:48:13 by nkarpilo         ###   ########.fr       */
+/*   Updated: 2023/11/27 20:37:38 by nkarpilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		len_to_newline(t_list *list);
 void	copy_str(t_list *list, char *str);
 char	*get_line(t_list *list);
 int		found_newline(t_list *list);
-void	append(t_list **list, char *buf);
+void	node_add(t_list **list, char *buf);
 void	create_list(t_list **list, int fd);
 char	*ft_get_next_line(int fd);
 int		main(void);
