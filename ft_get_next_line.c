@@ -6,21 +6,12 @@
 /*   By: nkarpilo <nkarpilo@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 18:48:33 by nkarpilo          #+#    #+#             */
-/*   Updated: 2023/11/27 18:34:04 by nkarpilo         ###   ########.fr       */
+/*   Updated: 2023/11/27 19:54:08 by nkarpilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_get_next_line.h"
 
-char	*ft_strchr(const char *s, int c)
-{
-	while (*s != (char)c && *s != '\0')
-		s++;
-	if (*s == (char)c)
-		return ((char *)s);
-	else
-		return (NULL);
-}
 
 void	dealloc(t_list **list, t_list *clean_node, char *buf)
 {
@@ -151,10 +142,17 @@ char *get_line(t_list *list)
 
 int	found_newline(t_list *list)
 {
+	int	i;
+
 	if (!list)
 		return (0);
-	if (ft_strchr((char *)list, '\n'))
+	i = 0;		
+	while (list->str_buf[i] != '\n' && list->str_buf[i] != '\0')
+		i++;
+	if (list->str_buf[i] == '\n')
 		return (1);
+	else
+		list = list->next;
 	return (0);
 }
 
@@ -182,7 +180,7 @@ void	create_list(t_list **list, int fd)
 
 	while (1 > found_newline(*list))
 	{
-		buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+		buf = malloc(BUFFER_SIZE + 1);
 		if (buf == NULL)
 			return ;
 		char_read = read(fd, buf, BUFFER_SIZE);
@@ -207,6 +205,7 @@ char	*ft_get_next_line(int fd)
 	if (list == NULL)
 		return (NULL);
 	buf = get_line(list);
+	polish_text(&list);
 	return (buf);
 }
 
@@ -217,7 +216,6 @@ int	main(void)
 	int		lines;
 
 	lines = 1;
-	line = 0;
 	fd = open("ass.txt", O_RDONLY);
 	if (fd < 0)
 		return (1);
