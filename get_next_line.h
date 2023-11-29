@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_get_next_line.h                                 :+:      :+:    :+:   */
+/*   get_next_line.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkarpilo <nkarpilo@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 18:48:37 by nkarpilo          #+#    #+#             */
-/*   Updated: 2023/11/27 20:37:38 by nkarpilo         ###   ########.fr       */
+/*   Updated: 2023/11/28 17:20:01 by nkarpilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_GET_NEXT_LINE_H
-# define FT_GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 10
@@ -33,10 +33,10 @@ t_list	*find_last_node(t_list *list);
 void	polish_text(t_list **list);
 int		len_to_newline(t_list *list);
 void	copy_str(t_list *list, char *str);
-char	*get_line(t_list *list);
+char	*line_get(t_list *list);
 int		found_newline(t_list *list);
 void	node_add(t_list **list, char *buf);
 void	create_list(t_list **list, int fd);
-char	*ft_get_next_line(int fd);
-int		main(void);
+char	*get_next_line(int fd);
+
 #endif

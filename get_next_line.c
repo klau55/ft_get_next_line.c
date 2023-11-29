@@ -1,49 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_get_next_line.c                                 :+:      :+:    :+:   */
+/*   get_next_line.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkarpilo <nkarpilo@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 18:48:33 by nkarpilo          #+#    #+#             */
-/*   Updated: 2023/11/27 20:37:40 by nkarpilo         ###   ########.fr       */
+/*   Updated: 2023/11/28 17:19:54 by nkarpilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_get_next_line.h"
-
-
-void	dealloc(t_list **list, t_list *clean_node, char *buf)
-{
-	t_list	*tmp;
-
-	if (list == NULL)
-		return ;
-	while (*list)
-	{
-		tmp = (*list)->next;
-		free((*list)->str_buf);
-		free(*list);
-		*list = tmp;
-	}
-	*list = NULL;
-	if (clean_node->str_buf[0])
-		*list = clean_node;
-	else
-	{
-		free(buf);
-		free(clean_node);
-	}
-}
-
-t_list	*find_last_node(t_list *list)
-{
-	if (list == NULL)
-		return (NULL);
-	while (list->next)
-		list = list->next;
-	return (list);
-}
+#include "get_next_line.h"
 
 void	polish_text(t_list **list)
 {
@@ -72,81 +39,13 @@ void	polish_text(t_list **list)
 	dealloc(list, clean_node, buf);
 }
 
-int	len_to_newline(t_list *list)
-{
-	int		i;
-	int		len;
-
-	if (list == NULL)
-		return (0);
-	len = 0;
-	while (list)
-	{
-		i = 0;
-		while (list->str_buf[i])
-		{
-			if (list->str_buf[i] == '\n')
-			{
-				++len;
-				return (len);
-			}
-			++i;
-			++len;
-		}
-		list = list->next;
-	}
-	return (len);
-}
-
-void	copy_str(t_list *list, char *str)
-{
-	int		i;
-	int		k;
-
-	if (list == NULL)
-		return ;
-	k = 0;
-	while (list)
-	{
-		i = 0;
-		while (list->str_buf[i])
-		{
-			if (list->str_buf[i] == '\n')
-			{
-				str[k] = '\n';
-				str[++k] = '\0';
-				return ;
-			}
-			str[k++] = list->str_buf[i++];
-		}
-		list = list->next;
-	}
-	str[k] = '\0';
-}
-
-
-char *get_line(t_list *list)
-{
-	int		str_len;
-	char	*next_str;
-
-	if (list == NULL)
-		return (NULL);
-	str_len = len_to_newline(list);
-	next_str = malloc(str_len + 1);
-	if (next_str == NULL)
-		return (NULL);
-	copy_str(list, next_str);
-	return (next_str);
-}
-
 int	found_newline(t_list *list)
 {
 	int	i;
 
 	if (!list)
 		return (0);
-	i = 0;		
+	i = 0;
 	while (list->str_buf[i] != '\n' && list->str_buf[i] != '\0')
 		i++;
 	if (list->str_buf[i] == '\n')
@@ -194,7 +93,7 @@ void	create_list(t_list **list, int fd)
 	}
 }
 
-char	*ft_get_next_line(int fd)
+char	*get_next_line(int fd)
 {
 	static t_list	*list;
 	char			*buffer;
@@ -204,21 +103,7 @@ char	*ft_get_next_line(int fd)
 	create_list(&list, fd);
 	if (list == NULL)
 		return (NULL);
-	buffer = get_line(list);
+	buffer = line_get(list);
 	polish_text(&list);
 	return (buffer);
-}
-
-int	main(void)
-{
-	int		fd;
-	char	*line;
-	int		lines;
-
-	lines = 1;
-	fd = open("ass.txt", O_RDONLY);
-	if (fd < 0)
-		return (1);
-	while ((line = ft_get_next_line(fd)))
-		printf("%d -> %s\n", lines++, line);
 }
