@@ -45,13 +45,16 @@ int	found_newline(t_list *list)
 
 	if (!list)
 		return (0);
-	i = 0;
-	while (list->str_buf[i] != '\n' && list->str_buf[i] != '\0')
-		i++;
-	if (list->str_buf[i] == '\n')
-		return (1);
-	else
-		list = list->next;
+	while (list)
+	{
+		i = 0;
+		while (list->str_buf[i] != '\n' && list->str_buf[i] != '\0')
+			i++;
+		if (list->str_buf[i] == '\n')
+			return (1);
+		else
+			list = list->next;
+	}
 	return (0);
 }
 
@@ -77,7 +80,7 @@ void	create_list(t_list **list, int fd)
 	int		char_read;
 	char	*buf;
 
-	while (1 > found_newline(*list))
+	while (1 != found_newline(*list))
 	{
 		buf = malloc(BUFFER_SIZE + 1);
 		if (buf == NULL)
@@ -107,3 +110,14 @@ char	*get_next_line(int fd)
 	polish_text(&list);
 	return (buffer);
 }
+
+/*int	main(void)
+{
+	char	*res;
+	int		fd;
+
+	fd = open("ass.txt", O_RDONLY);
+	res = get_next_line(fd);
+	printf("%s", res);
+	return (0);
+}*/

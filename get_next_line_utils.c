@@ -6,11 +6,12 @@
 /*   By: nkarpilo <nkarpilo@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 16:16:03 by nkarpilo          #+#    #+#             */
-/*   Updated: 2023/11/29 16:21:48 by nkarpilo         ###   ########.fr       */
+/*   Updated: 2023/12/04 13:28:21 by nkarpilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
 void	dealloc(t_list **list, t_list *clean_node, char *buf)
 {
@@ -58,10 +59,7 @@ int	len_to_newline(t_list *list)
 		while (list->str_buf[i])
 		{
 			if (list->str_buf[i] == '\n')
-			{
-				++len;
-				return (len);
-			}
+				return (++len);
 			++i;
 			++len;
 		}
@@ -94,6 +92,7 @@ void	copy_str(t_list *list, char *str)
 		list = list->next;
 	}
 	str[k] = '\0';
+	return ;
 }
 
 char	*line_get(t_list *list)
