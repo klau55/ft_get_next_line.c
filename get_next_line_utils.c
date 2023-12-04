@@ -6,7 +6,7 @@
 /*   By: nkarpilo <nkarpilo@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 16:16:03 by nkarpilo          #+#    #+#             */
-/*   Updated: 2023/12/04 13:28:21 by nkarpilo         ###   ########.fr       */
+/*   Updated: 2023/12/04 16:19:40 by nkarpilo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	dealloc(t_list **list, t_list *clean_node, char *buf)
 {
 	t_list	*tmp;
 
-	if (list == NULL)
+	if (*list == NULL)
 		return ;
 	while (*list)
 	{
@@ -27,9 +27,9 @@ void	dealloc(t_list **list, t_list *clean_node, char *buf)
 		*list = tmp;
 	}
 	*list = NULL;
-	if (clean_node->str_buf[0])
+	if (clean_node && clean_node->str_buf[0])
 		*list = clean_node;
-	else
+	else if (buf && clean_node)
 	{
 		free(buf);
 		free(clean_node);

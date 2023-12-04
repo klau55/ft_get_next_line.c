@@ -86,7 +86,7 @@ void	create_list(t_list **list, int fd)
 		if (buf == NULL)
 			return ;
 		char_read = read(fd, buf, BUFFER_SIZE);
-		if (!char_read)
+		if (!char_read || char_read < 0)
 		{
 			free(buf);
 			return ;
@@ -98,17 +98,23 @@ void	create_list(t_list **list, int fd)
 
 char	*get_next_line(int fd)
 {
-	static t_list	*list;
-	char			*buffer;
+	static t_list	*list = NULL;
+	char			*res;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &buffer, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &res, 0) < 0)
+	{
+		dealloc(&list, NULL, NULL);
 		return (NULL);
+	}
 	create_list(&list, fd);
 	if (list == NULL)
+	{
+		dealloc(&list, NULL, NULL);
 		return (NULL);
-	buffer = line_get(list);
+	}
+	res = line_get(list);
 	polish_text(&list);
-	return (buffer);
+	return (res);
 }
 
 /*int	main(void)
